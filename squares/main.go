@@ -20,6 +20,11 @@ const (
 	TimerPeriod = 250 // milliseconds
 )
 
+var (
+	x = 4
+	y = 6
+)
+
 var window *glfw.Window
 
 func main() {
@@ -35,6 +40,7 @@ func main() {
 		panic(err)
 	}
 	window.MakeContextCurrent()
+	window.SetKeyCallback(keyPressed)
 
 	if err := gl.Init(); err != nil {
 		panic(err)
@@ -44,7 +50,7 @@ func main() {
 	go func() {
 		for range ticker.C {
 			//fmt.Println("tick ", t)
-			// update()
+			update()
 		}
 	}()
 	// Init OpenGL
@@ -71,14 +77,35 @@ func square(i, j int) {
 	gl.End()
 }
 
+func update() (x int, y int) {
+	return
+}
+
 func draw() {
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 	gl.Color3ub(192, 192, 192)
-	square(1, 6)
-	square(2, 6)
-	square(3, 6)
-	square(4, 6)
-	square(5, 6)
-	square(30, 6)
+	// square(1, 6)
+	// square(2, 6)
+	// square(3, 6)
+	square(x, y)
+	// square(5, 6)
+	// square(30, 6)
 	window.SwapBuffers()
+}
+
+func keyPressed(w *glfw.Window, k glfw.Key, s int, act glfw.Action, mods glfw.ModifierKey) {
+	if act != glfw.Press {
+		return
+	}
+	// Rotation
+	switch k {
+	case glfw.KeyUp:
+		x--
+	case glfw.KeyDown:
+		x++
+	case glfw.KeyLeft:
+		y--
+	case glfw.KeyRight:
+		y++
+	}
 }
